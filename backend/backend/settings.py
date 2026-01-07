@@ -29,7 +29,20 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-fallback-key-change-in-pro
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 # Update ALLOWED_HOSTS with your Render domain
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',') if os.getenv('ALLOWED_HOSTS') else ['*']
+# Handle empty string case properly
+allowed_hosts_env = os.getenv('ALLOWED_HOSTS', '').strip()
+if allowed_hosts_env:
+    ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_env.split(',') if host.strip()]
+else:
+    # Default to allow all hosts (for development) - change to specific domains in production
+    ALLOWED_HOSTS = ['*']
+
+# CSRF trusted origins - required for admin and API requests
+csrf_origins_env = os.getenv('CSRF_TRUSTED_ORIGINS', '').strip()
+if csrf_origins_env:
+    CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in csrf_origins_env.split(',') if origin.strip()]
+else:
+    CSRF_TRUSTED_ORIGINS = []
 
 
 REST_FRAMEWORK = {
@@ -156,14 +169,14 @@ AUTH_USER_MODEL ='user.User'
 
 # CORS configuration
 # For production, consider restricting to specific origins instead of allowing all
-CORS_ALLOW_ALL_ORIGINS = True  # Change to False and use CORS_ALLOWED_ORIGINS for production
-CORS_ALLOW_CREDENTIALS = True
+cors_origins_env = os.getenv('CORS_ALLOWED_ORIGINS', '').strip()
+if cors_origins_env:
+    CORS_ALLOWED_ORIGINS = [origin.strip() for origin in cors_origins_env.split(',') if origin.strip()]
+    CORS_ALLOW_ALL_ORIGINS = False
+else:
+    CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins if not specified (for development)
 
-# Example of restricted CORS (uncomment and configure for production):
-# CORS_ALLOWED_ORIGINS = [
-#     "https://your-frontend-url.onrender.com",
-#     "https://your-custom-domain.com",
-# ]
+CORS_ALLOW_CREDENTIALS = True
 
 
 
