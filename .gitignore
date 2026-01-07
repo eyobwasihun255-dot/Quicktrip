@@ -1,0 +1,128 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+env/
+venv/
+*.sqlite3
+*.pyc
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+
+dist-ssr
+*.local
+
+# Migration files (common tools: Prisma/TypeORM/Sequelize/Knex)
+**/migrations/**
+**/migration/**
+prisma/migrations/**
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Django media and static files
+backend/media/
+media/
+*.log
+
+# Node / frontend
+node_modules/
+dist/
+.env
+frontend/.env
+
+# VSCode / OS
+.vscode/
+.DS_Store
+Thumbs.db
+
+
+# Ignore Django migration files, but keep package markers
+**/migrations/*.py
+!**/migrations/__init__.py
+**/migrations/*.pyc
+
+# Or ignore just this one migration file (optional / instead of the rules above)
+
+# Flutter/Dart/Pub related
+.dart_tool/
+.packages
+.pub-cache/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.flutter-versions
+.pub/
+
+# iOS
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/Generated.xcconfig
+ios/Flutter/App.framework
+ios/Flutter/Flutter.podspec
+Pods/
+Podfile.lock
+*.xcworkspace
+*.xcodeproj/project.xcworkspace/
+
+# Android
+.android/
+*.iml
+*.gradle
+/local.properties
+/.gradle
+/app/build/
+**/build/
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# Misc
+*.log
+*.lock
+# Flutter/Dart
+.dart_tool/
+.packages
+.pub-cache/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub/
+
+# iOS
+ios/Pods/
+ios/Flutter/Flutter.framework
+ios/Flutter/Generated.xcconfig
+*.xcworkspace
+*.xcodeproj/
+
+# Android
+.android/
+*.iml
+*.gradle
+local.properties
+app/build/
+
+# IDEs
+.idea/
+.vscode/
+
+# Misc
+*.log
+*.lock

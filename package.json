@@ -1,0 +1,23 @@
+{
+  "name": "quicktrip",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kmax11/Quicktrip-official.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/kmax11/Quicktrip-official/issues"
+  },
+  "homepage": "https://github.com/kmax11/Quicktrip-official#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.56.1",
+    "@types/node": "^24.9.1"
+  }
+}

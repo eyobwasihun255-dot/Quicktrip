@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapa Payment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            background: #ffffff;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .form-container h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .form-container input, .form-container button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .form-container button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .form-container button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Welcome to Chapa Payment</h1>
+        <p>Fill in the details below to make a payment.</p>
+        <form method="POST" action="https://api.chapa.co/v1/hosted/pay" target="_blank">
+            <input type="hidden" name="public_key" value="CHAPUBK_TEST-nCgoYHOWFBjGTHP6sFqtJ4jxEFQL3MkM" />
+            <input type="hidden" name="tx_ref" id="tx_ref" value="uniqueid" />
+            <input type="hidden" name="currency" value="ETB" />
+            <input type="number" name="amount" placeholder="Enter amount (ETB)" value="{{amount}}" />
+            <input type="hidden" name="callback_url" value="http://127.0.0.1:8000/api/payment/callback/" />
+            <input type="hidden" name="return_url" value="http://127.0.0.1:8000/api/next/" />
+            <button type="submit" onclick="generateTransactionId()">Pay Now</button>
+        </form>
+    </div>
+
+    <script>
+        var unique = document.getElementById('tx_ref');
+        function generateTransactionId() {
+            var uniqueid = "negade-tx-" + Math.random().toString(16).slice(2);
+            unique.value = uniqueid;
+        }
+    </script>
+</body>
+</html>
