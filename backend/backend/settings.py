@@ -1,18 +1,35 @@
+"""
+Production Settings Example for Render Deployment
+
+This file shows the changes needed in settings.py for production deployment.
+DO NOT use this file directly - instead, update your settings.py with these changes.
+
+Key changes:
+1. Use environment variables for SECRET_KEY and DEBUG
+2. Configure PostgreSQL database using DATABASE_URL
+3. Add WhiteNoise for static file serving
+4. Update ALLOWED_HOSTS
+5. Configure static files properly
+"""
 
 from pathlib import Path
 from datetime import timedelta
 from dotenv import load_dotenv
 import os
+import dj_database_url
 
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-%n^5&^-ac4hvw8u4l%mq)c-kr_8&aq_qc5%k#73u(wmr33v_og'
+# SECURITY: Use environment variable for SECRET_KEY
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-fallback-key-change-in-production')
 
-DEBUG = True
+# SECURITY: Set DEBUG to False in production
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ["*"]
+# Update ALLOWED_HOSTS with your Render domain
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',') if os.getenv('ALLOWED_HOSTS') else ['*']
 
 
 REST_FRAMEWORK = {
@@ -45,11 +62,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders', 
     'api', 
-  
+    'whitenoise.runserver_nostatic',  # Add WhiteNoise for static files
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add WhiteNoise middleware (after SecurityMiddleware)
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -80,14 +98,24 @@ TEMPLATES = [
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 
-
+# Database configuration - Use PostgreSQL on Render
+# Render provides DATABASE_URL environment variable
 DATABASES = {
-    'default': {
-          'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',   
-    }
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL'),
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
 }
 
+# Fallback to SQLite for local development if DATABASE_URL is not set
+if not os.getenv('DATABASE_URL'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',   
+        }
+    }
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -113,14 +141,30 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = 'static/'
+# Static files configuration for production
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# Media files configuration
+# NOTE: Render's filesystem is ephemeral - consider using cloud storage (S3, Cloudinary) for production
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL ='user.User'
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS configuration
+# For production, consider restricting to specific origins instead of allowing all
+CORS_ALLOW_ALL_ORIGINS = True  # Change to False and use CORS_ALLOWED_ORIGINS for production
 CORS_ALLOW_CREDENTIALS = True
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# Example of restricted CORS (uncomment and configure for production):
+# CORS_ALLOWED_ORIGINS = [
+#     "https://your-frontend-url.onrender.com",
+#     "https://your-custom-domain.com",
+# ]
+
+
+
+
