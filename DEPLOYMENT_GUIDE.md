@@ -86,9 +86,13 @@ In the **Environment** section, add these variables:
 
 ### Step 6: Create Superuser
 
-You have **two options**:
+**If you have Shell access:**
+- See options A, B, or C below
 
-#### Option A: Using Custom Management Command (Recommended)
+**If you DON'T have Shell access (Free Tier):**
+- Use **Option D: Automatic Creation** (Recommended for Free Tier)
+
+#### Option A: Using Custom Management Command (Requires Shell)
 
 1. In the Render Shell, run:
    ```bash
@@ -96,7 +100,7 @@ You have **two options**:
    ```
    Replace `YOUR_PHONE_NUMBER` with a numeric phone number (e.g., `912345678`) and `YOUR_PASSWORD` with your desired password.
 
-#### Option B: Using Environment Variables (Non-Interactive)
+#### Option B: Using Environment Variables with Shell (Requires Shell)
 
 1. Add these environment variables to your Render service:
    - `SUPERUSER_PHONE_NUMBER` = `912345678` (your phone number)
@@ -107,7 +111,7 @@ You have **two options**:
    python manage.py createsuperuser_custom --no-input
    ```
 
-#### Option C: Using Django Shell (Alternative)
+#### Option C: Using Django Shell (Requires Shell)
 
 1. In Render Shell, run:
    ```bash
@@ -119,6 +123,32 @@ You have **two options**:
    User.objects.create_superuser(phone_number=912345678, password='your-password', user_type=User.type.ADMIN)
    ```
 3. Type `exit()` to leave the shell
+
+#### Option D: Automatic Creation (No Shell Required - Recommended for Free Tier) ⭐
+
+This method automatically creates a superuser during deployment.
+
+1. **Add Environment Variables:**
+   - Go to your backend service → **"Environment"** tab
+   - Add:
+     - `SUPERUSER_PHONE_NUMBER` = `912345678` (your phone number, numeric only)
+     - `SUPERUSER_PASSWORD` = `your-secure-password`
+
+2. **Update Build Command:**
+   - Go to **"Settings"** → **"Build Command"**
+   - Update to:
+     ```bash
+     pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput && python create_superuser.py
+     ```
+
+3. **Redeploy:**
+   - Click **"Manual Deploy"** → **"Deploy latest commit"**
+   - Check build logs for: `SUCCESS: Superuser created successfully...`
+
+4. **Test Login:**
+   - Go to `/admin` and log in with your phone number and password
+
+**Note:** The script is safe to run multiple times - it won't create duplicate superusers.
 
 ### Step 7: Verify Backend is Working
 
