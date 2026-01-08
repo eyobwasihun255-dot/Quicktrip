@@ -1,8 +1,8 @@
 """
-Script to automatically create a superuser if one doesn't exist.
-This runs during deployment and uses environment variables.
-Safe to run multiple times - won't create duplicate superusers.
+Script to automatically create default system users.
+Safe to run multiple times.
 """
+
 import os
 import sys
 import django
@@ -14,64 +14,77 @@ django.setup()
 from user.models import User
 
 
-def create_superuser_if_needed():
-    """Create superuser if it doesn't exist and environment variables are set."""
-    
-    # Get environment variables
-    phone_number = os.getenv('SUPERUSER_PHONE_NUMBER', '').strip()
-    password = os.getenv('SUPERUSER_PASSWORD', '').strip()
-    
-    # Check if environment variables are set
-    if not phone_number or not password:
-        print("INFO: SUPERUSER_PHONE_NUMBER and SUPERUSER_PASSWORD not set. Skipping superuser creation.")
-        print("INFO: To create a superuser, set these environment variables in Render.")
-        return False
-    
-    # Validate phone number (must be numeric)
-    try:
-        phone_number_int = int(phone_number)
-    except ValueError:
-        print(f"ERROR: Phone number must be numeric. Got: {phone_number}")
-        return False
-    
-    # Check if superuser already exists
-    if User.objects.filter(phone_number=phone_number_int, is_superuser=True).exists():
-        print(f"INFO: Superuser with phone number {phone_number} already exists. Skipping creation.")
-        return True
-    
-    # Check if user with this phone number exists (but not superuser)
-    if User.objects.filter(phone_number=phone_number_int).exists():
-        print(f"WARNING: User with phone number {phone_number} exists but is not a superuser.")
-        print(f"WARNING: Updating existing user to superuser...")
+DEFAULT_PASSWORD = "admin@123"
+
+USERS_TO_CREATE = [
+    {
+        "phone": 911111111,
+        "user_type": User.type.ADMIN,
+        "is_superuser": True,
+        "is_staff": True,
+        "is_admin": True,
+    },
+    {
+        "phone": 922222222,
+        "user_type": User.type.SUB_ADMIN,
+        "is_superuser": False,
+        "is_staff": True,
+        "is_admin": False,
+    },
+    {
+        "phone": 933333333,
+        "user_type": User.type.USER,
+        "is_superuser": False,
+        "is_staff": False,
+        "is_admin": False,
+    },
+    {
+        "phone": 944444444,
+        "user_type": User.type.DRIVER,
+        "is_superuser": False,
+        "is_staff": False,
+        "is_admin": False,
+    },
+]
+
+
+def create_or_update_users():
+    success = True
+
+    for user_data in USERS_TO_CREATE:
+        phone = user_data["phone"]
+
         try:
-            user = User.objects.get(phone_number=phone_number_int)
-            user.is_superuser = True
-            user.is_staff = True
-            user.is_admin = True
-            user.user_type = User.type.ADMIN
-            user.set_password(password)
+            user, created = User.objects.get_or_create(
+                phone_number=phone,
+                defaults={
+                    "user_type": user_data["user_type"],
+                    "is_superuser": user_data["is_superuser"],
+                    "is_staff": user_data["is_staff"],
+                    "is_admin": user_data["is_admin"],
+                }
+            )
+
+            # If user already exists, update fields
+            user.user_type = user_data["user_type"]
+            user.is_superuser = user_data["is_superuser"]
+            user.is_staff = user_data["is_staff"]
+            user.is_admin = user_data["is_admin"]
+            user.set_password(DEFAULT_PASSWORD)
             user.save()
-            print(f"SUCCESS: Updated user {phone_number} to superuser.")
-            return True
+
+            if created:
+                print(f"SUCCESS: Created {user.user_type} with phone {phone}")
+            else:
+                print(f"UPDATED: {user.user_type} with phone {phone}")
+
         except Exception as e:
-            print(f"ERROR: Failed to update user: {str(e)}")
-            return False
-    
-    # Create new superuser
-    try:
-        user = User.objects.create_superuser(
-            phone_number=phone_number_int,
-            password=password,
-            user_type=User.type.ADMIN
-        )
-        print(f"SUCCESS: Superuser created successfully with phone number: {phone_number}")
-        return True
-    except Exception as e:
-        print(f"ERROR: Failed to create superuser: {str(e)}")
-        return False
+            print(f"ERROR: Failed for phone {phone}: {e}")
+            success = False
+
+    return success
 
 
-if __name__ == '__main__':
-    success = create_superuser_if_needed()
-    sys.exit(0 if success else 1)
-
+if __name__ == "__main__":
+    result = create_or_update_users()
+    sys.exit(0 if result else 1)
