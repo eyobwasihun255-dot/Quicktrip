@@ -62,6 +62,7 @@ def create_or_update_users():
                     "is_superuser": user_data["is_superuser"],
                     "is_staff": user_data["is_staff"],
                     "is_admin": user_data["is_admin"],
+                    "is_active": True,  # Ensure user is active
                 }
             )
 
@@ -70,6 +71,7 @@ def create_or_update_users():
             user.is_superuser = user_data["is_superuser"]
             user.is_staff = user_data["is_staff"]
             user.is_admin = user_data["is_admin"]
+            user.is_active = True  # Ensure user is active
             user.set_password(DEFAULT_PASSWORD)
             user.save()
 
