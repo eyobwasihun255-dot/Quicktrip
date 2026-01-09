@@ -58,8 +58,8 @@
             <input type="hidden" name="tx_ref" id="tx_ref" value="uniqueid" />
             <input type="hidden" name="currency" value="ETB" />
             <input type="number" name="amount" placeholder="Enter amount (ETB)" value="{{amount}}" />
-            <input type="hidden" name="callback_url" value="http://127.0.0.1:8000/api/payment/callback/" />
-            <input type="hidden" name="return_url" value="http://127.0.0.1:8000/api/next/" />
+            <input type="hidden" name="callback_url" value="https://quicktrip-e761.onrender.com/api/payment/callback/" />
+            <input type="hidden" name="return_url" value="https://quicktrip-e761.onrender.com/api/next/" />
             <button type="submit" onclick="generateTransactionId()">Pay Now</button>
         </form>
     </div>
