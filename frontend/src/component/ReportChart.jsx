@@ -56,7 +56,6 @@ const ReportChart = ({  timeRange }) => {
       },
       monthly: {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        values: [1275, 1380, 1725, 1620, 1875, 1980, 1920, 2175, 2070, 2 , 'Oct', 'Nov', 'Dec'],
         values: [1275, 1380, 1725, 1620, 1875, 1980, 1920, 2175, 2070, 2280, 2220, 2475]
       },
       yearly: {
