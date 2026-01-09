@@ -1,10 +1,12 @@
 import '../pages/style.css'
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../api";
 import { ACCESS_TOKEN, REFRESH_TOKEN, USER_ROLE ,USER_ID, BRANCH } from "../constants";
 
 function Login() {
+    const navigate = useNavigate();
     const [phone_number, setPhonenumber] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
@@ -40,7 +42,7 @@ function Login() {
           localStorage.setItem(ACCESS_TOKEN, res.data.access);
           localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
           console.log(role)
-          window.location.href = '/home';
+          navigate('/home');
           
 
       }
