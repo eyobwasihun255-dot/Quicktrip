@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { Link } from "react-router-dom"
 import { USER_ROLE } from "../constants"
 
 
@@ -28,104 +29,104 @@ const Sidebar = () => {
         <nav className="sidebar-nav">
           <ul>
             <li >
-            <a href="/home">
+            <Link to="/home">
             <span className="icon"><i className="fa-solid fa-chart-simple"></i>    </span>
                 <span className="text">Dashboard</span>
-              </a>
+              </Link>
             </li>
 
              {isAdmin && (
               <>
                
                 <li >
-                <a href="/branchs">
+                <Link to="/branchs">
                 <span className="icon"><i className="fa-solid fa-building"></i>    </span>
                     <span className="text">Stations & Trips</span>
-                </a>
+                </Link>
                 </li>
                  <li >
-                <a href="/buses">
+                <Link to="/buses">
                 <span className="icon"><i className="fa-solid fa-bus"></i>    </span>
                     <span className="text">Buses</span>
-                </a>
+                </Link>
                 </li>
                 <li >
-                   <a href="/passengers">
+                   <Link to="/passengers">
                    <span className="icon"><i className="fa-solid fa-user"></i>    </span>
                        <span className="text">Passengers</span>
-                   </a>
+                   </Link>
                    </li>
                 
                 <li>
-                  <a href="/subadmin">
+                  <Link to="/subadmin">
                   <span className="icon"><i className="fa-solid fa-user-tie"></i>    </span>
                 <span className="text">Sub-Admins</span>
-                </a>
+                </Link>
                 </li>      
                 <li>
-                <a href="/revenue">
+                <Link to="/revenue">
                 <span className="icon"><i className="fa-solid fa-file-invoice"></i>    </span>
                     <span className="text">Revenue</span>
-                 </a>
+                 </Link>
                 </li>
                 <li >
-                  <a href="/vehicles">
+                  <Link to="/vehicles">
                   <span className="icon"><i className="fa-solid fa-van-shuttle"></i>    </span>
                       <span className="text">Vehicles</span>
-                  </a>
+                  </Link>
                 </li>
                 <li >
-                  <a href="/ticket">
+                  <Link to="/ticket">
                   <span className="icon"><i className="fa-solid fa-ticket"></i>    </span>
                       <span className="text">Ticket</span>
-                  </a>
+                  </Link>
                 </li>
                 <li >
-                  <a href="/location">
+                  <Link to="/location">
                   <span className="icon"><i className="fa-solid fa-location-dot"></i>    </span>
                       <span className="text">Track Location</span>
-                  </a>
+                  </Link>
                 </li>
                 <li >
-                  <a href="/payment">
+                  <Link to="/payment">
                   <span className="icon"><i className="fa-solid fa-money-bill"></i>    </span>
                       <span className="text">Payment</span>
-                  </a>
+                  </Link>
                 </li>
                 </>
                )}
                 {isSubAdmin&& (
                    <>               
                    <li >
-                   <a href="/vehicles">
+                   <Link to="/vehicles">
                    <span className="icon"><i className="fa-solid fa-bus"></i>    </span>
                        <span className="text">Vehicles</span>
-                   </a>
+                   </Link>
                    </li>
                     <li >
-                   <a href="/passengers">
+                   <Link to="/passengers">
                    <span className="icon"><i className="fa-solid fa-user"></i>    </span>
                        <span className="text">Passengers</span>
-                   </a>
+                   </Link>
                    </li>
                  
                    <li >
-                   <a href="/ticket">
+                   <Link to="/ticket">
                    <span className="icon"><i className="fa-solid fa-ticket"></i>    </span>
                        <span className="text">Ticket</span>
-                   </a>
+                   </Link>
                    </li>
                    <li >
-                   <a href="/location">
+                   <Link to="/location">
                    <span className="icon"><i className="fa-solid fa-location-dot"></i>    </span>
                        <span className="text">Track Location</span>
-                   </a>
+                   </Link>
                    </li>
                    <li >
-                   <a href="/payment">
+                   <Link to="/payment">
                    <span className="icon"><i className="fa-solid fa-money-bill"></i>    </span>
                        <span className="text">Payment</span>
-                   </a>
+                   </Link>
                    </li>
                    </>
 
@@ -133,17 +134,17 @@ const Sidebar = () => {
               
             
             <li >
-            <a href="/setting">
+            <Link to="/setting">
             <span className="icon"><i className="fa-solid fa-cog"></i>    </span>
                 <span className="text">Settings</span>
-            </a>
+            </Link>
             </li>
             <li>
-                  <a href="/logout">
+                  <Link to="/logout">
                   <span className="icon"><i className="fa-solid fa-sign-out"></i>    </span>               
 
                 <span className="text">Log out</span>
-                </a>
+                </Link>
                 </li>
           </ul>
         </nav>

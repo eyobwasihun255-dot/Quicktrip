@@ -65,7 +65,7 @@ function App() {
           }
         />
          <Route
-          path="/subadmin/"
+          path="/subadmin"
           element={
             <Protected allowedRoles={"a"}>
               <Sub_admin/>
@@ -73,7 +73,7 @@ function App() {
           }
         />
          <Route
-          path="/revenue/"
+          path="/revenue"
           element={
             <Protected allowedRoles={"a"}>
               <Revenue />
@@ -89,7 +89,7 @@ function App() {
           }
         />
         <Route
-          path="/ticket/"
+          path="/ticket"
           element={
             <Protected allowedRoles={"as"}>
               <TicketPurchase/>
@@ -97,7 +97,7 @@ function App() {
           }
         />
          <Route
-          path="/location/"
+          path="/location"
           element={
             <Protected allowedRoles={"as"}>
               <Loc />
@@ -123,7 +123,7 @@ function App() {
         />
         
         <Route
-          path="/setting/"
+          path="/setting"
           element={
             
               <Settings />
