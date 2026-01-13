@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import NotificationItem from "./NotificationItem";
 import MessageItem from "./MessageItem";
 import api from "../api";
@@ -368,13 +369,13 @@ const NotificationBell = () => {
 
               <div className="notification-footer">
                 {activeTab === "notifications" ? (
-                  <a href="/setting#notifications" className="view-all">
+                  <Link to="/setting#notifications" className="view-all">
                     View all notifications
-                  </a>
+                  </Link>
                 ) : (
-                  <a href="/messages" className="view-all">
+                  <Link to="/messages" className="view-all">
                     View all messages
-                  </a>
+                  </Link>
                 )}
               </div>
             </>
