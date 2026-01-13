@@ -19,8 +19,8 @@ Quicktrip is a Django (DRF) + React application providing branch/station, user/d
 - Media/uploads stored locally and ignored in VCS.
 - JWT-based endpoints available as in code; some endpoints allow AllowAny per current settings.
 - Known base URL for local testing (default):
-  - Backend: http://127.0.0.1:8000/
-  - Frontend: http://127.0.0.1:5173/ (or 5174)
+  - Backend:https://quicktrip-e761.onrender.com/
+  - Frontend: https://quicktrip-1.onrender.com/
 - Test data
   - Branch: at least one branch exists (id=1) or created during test.
   - Users: admin superuser for Django admin, sub-admin for UI, sample passengers.

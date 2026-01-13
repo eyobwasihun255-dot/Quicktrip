@@ -76,3 +76,5 @@ Or contact Render support to enable SPA routing for your static site.
 
 **Note**: The `_redirects` file is automatically copied from `public/` to `dist/` during the Vite build process, so it will be included in your deployment.
 
+
+

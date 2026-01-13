@@ -2,7 +2,7 @@ import axios from 'axios'
 import { ACCESS_TOKEN } from './constants'
 
 // Ensure baseURL ends with a trailing slash
-const rawBase = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000'
+const rawBase = import.meta.env.VITE_API_URL || 'https://quicktrip-e761.onrender.com'
 const baseURL = rawBase.endsWith('/') ? rawBase : `${rawBase}/`
 
 const api = axios.create({
