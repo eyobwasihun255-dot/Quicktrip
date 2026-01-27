@@ -4,9 +4,9 @@ import api from "../api";
 const SubAdminEdit = ({ onClose, onSave, subAdmin }) => {
   const [branchs, setBranchs] = useState([]);
   const [errors, setErrors] = useState({});
-  const [ setBranch] = useState(null);
+  const [ branch , setBranch] = useState(null);
   const [message, setMessage] = useState({ type: "", text: "" });
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({        
     position: "",
     branch: null,
   });

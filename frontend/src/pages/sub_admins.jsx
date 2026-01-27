@@ -17,7 +17,7 @@ function Sub_admin() {
   const [] = useState(false);
   const [branch, setBranch] = useState(null);
   const [subAdmins, setSubAdmins] = useState([]);
-  const [selectedsubAdmins, setselectedSubAdmins] = useState([]);
+  const [selectedsubAdmins, setselectedSubAdmins] = useState(null);
 
   useEffect(() => {
     getStaffs();
@@ -230,9 +230,9 @@ function Sub_admin() {
               onSave={handleAddSubAdmin}
             />
           )}
-          {showEditModal && (
+          {showEditModal && selectedsubAdmins && (
             <SubAdminEdit
-              onClose={() => { setEditModal(false); setselectedSubAdmins([]); }}
+              onClose={() => { setEditModal(false); setselectedSubAdmins(null); }}
               onSave={handleEditSubAdmin}
               subAdmin={selectedsubAdmins}
             />
