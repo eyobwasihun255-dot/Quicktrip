@@ -15,7 +15,7 @@ function Sub_admin() {
   const [filterRole] = useState("all");
   // eslint-disable-next-line no-empty-pattern
   const [] = useState(false);
-  const [, setBranch] = useState(null);
+  const [branch, setBranch] = useState(null);
   const [subAdmins, setSubAdmins] = useState([]);
   const [selectedsubAdmins, setselectedSubAdmins] = useState([]);
 
