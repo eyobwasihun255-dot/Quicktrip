@@ -16,8 +16,8 @@ function Sub_admin() {
   // eslint-disable-next-line no-empty-pattern
   const [] = useState(false);
   const [, setBranch] = useState(null);
-  const [subAdmins, setSubAdmins] = useState(null);
-  const [selectedsubAdmins, setselectedSubAdmins] = useState(null);
+  const [subAdmins, setSubAdmins] = useState([]);
+  const [selectedsubAdmins, setselectedSubAdmins] = useState([]);
 
   useEffect(() => {
     getStaffs();
@@ -88,9 +88,9 @@ function Sub_admin() {
   
   const filteredSubAdmins = subAdmins.filter((admin) => {
     const searchLower = (searchTerm || "").toLowerCase();
-    const first = (admin?.employee?.Fname || "").toLowerCase();
-    const last = (admin?.employee?.Lname || "").toLowerCase();
-    const branchName = (admin?.branch?.name || "").toLowerCase();
+    const first = (admin.employee?.Fname || "").toLowerCase();
+    const last = (admin.employee?.Lname || "").toLowerCase();
+    const branchName = (admin.branch?.name || "").toLowerCase();
 
     const matchesSearch =
       first.includes(searchLower) || last.includes(searchLower) || branchName.includes(searchLower);
@@ -98,7 +98,7 @@ function Sub_admin() {
     if (filterRole === "all") return matchesSearch;
 
     // support either user_type or role field
-    const roleVal = admin?.user_type || admin?.role || "";
+    const roleVal = admin.user_type || admin.role || "";
     return matchesSearch && roleVal === filterRole;
   });
 
@@ -149,17 +149,17 @@ function Sub_admin() {
                 </thead>
                 <tbody>
                   {filteredSubAdmins.map((admin) => (
-                    <tr key={admin?.id}>
-                      <td>{admin?.employee?.Fname || ""}</td>
-                      <td>{admin?.employee?.Lname || ""}</td>
-                      <td>{admin?.phone_number || ""}</td>
+                    <tr key={admin.id}>
+                      <td>{admin.employee?.Fname || ""}</td>
+                      <td>{admin.employee?.Lname || ""}</td>
+                      <td>{admin.phone_number || ""}</td>
 
                       <td>
-                        <span className={`role-badge ${admin?.role || ""}`}>
-                          {admin?.employee?.position || ""}
+                        <span className={`role-badge ${admin.role || ""}`}>
+                          {admin.employee?.position || ""}
                         </span>
                       </td>
-                      <td>{admin?.branch?.name || ""}</td>
+                      <td>{admin.branch?.name || ""}</td>
                       <td className="button">
                       <div className="action-buttons">
                         <button
@@ -170,8 +170,8 @@ function Sub_admin() {
                         </button>
                       </div>
                         <div className="action-buttons">
-                          {admin?.is_active ? (<button
-                            onClick={() => handleDeactivate(admin?.id)}
+                          {admin.is_active ? (<button
+                            onClick={() => handleDeactivate(admin.id)}
                             disabled={loading}
                             className={`btn btn-danger ${
                               loading ? "disabled" : ""
@@ -190,7 +190,7 @@ function Sub_admin() {
                               "Deactivate User"
                             )}
                           </button>):(<button
-                            onClick={() => handleActivate(admin?.id)}
+                            onClick={() => handleActivate(admin.id)}
                             disabled={loading}
                             style={{background : "lightgreen"}}
                             className={`btn btn-safe ${
@@ -232,7 +232,7 @@ function Sub_admin() {
           )}
           {showEditModal && (
             <SubAdminEdit
-              onClose={() => { setEditModal(false); setselectedSubAdmins(null); }}
+              onClose={() => { setEditModal(false); setselectedSubAdmins([]); }}
               onSave={handleEditSubAdmin}
               subAdmin={selectedsubAdmins}
             />
