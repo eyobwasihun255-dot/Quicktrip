@@ -3,6 +3,7 @@ import api from "../api"
 import Sidebar from "../component/sidebar"
 import Header from "../component/Header"
 
+import BusPriceModal from "../component/BusPriceModal"
 export default function Buses() {
   const [buses, setBuses] = useState([])
   const [selectedBus, setSelectedBus] = useState(null)
@@ -364,160 +365,20 @@ setBusPrices(pricesRes.data);
             </div>
           </div>
         )}
-{showChangeModal && (
-  <div className="modal-backdrop">
-    {notify && (
-  <div
-    style={{
-      position: "absolute",
-      top: "10px",
-      right: "10px",
-      background: "#4caf50",
-      color: "#fff",
-      padding: "8px 12px",
-      borderRadius: "4px",
-      boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-      zIndex: 9999
-    }}
-  >
-    {notify}
-  </div>
+      {showChangeModal && selectedBus && (
+  <BusPriceModal
+    bus={selectedBus}
+    prices={busPrices}
+    setPrices={setBusPrices}
+    vehicles={busVehicles}
+    setVehicles={setBusVehicles}
+    routes={routes}
+    longDistanceRoutes={longDistanceRoutes}
+    getRouteDistance={getRouteDistance}
+    onClose={() => setShowChangeModal(false)}
+  />
 )}
 
-    <div className="modal-card" style={{ width: "650px" }}>
-      <h2>Change Bus Settings</h2>
-
-      <p style={{ color: "red", fontSize: "14px", marginBottom: "15px" }}>
-        ⚠️ Any change you make is saved automatically.
-      </p>
-
-      {/* ================= VEHICLES ================= */}
-      <h3>Vehicles</h3>
-
-      {busVehicles.map(v => (
-        <div
-          key={v.id}
-          style={{
-            padding: "10px",
-            marginBottom: "8px",
-            borderRadius: "6px",
-            background: v.in_queue ? "#d4f7d4" : "#f5f5f5"
-          }}
-        >
-          <strong>{v.plate_number}</strong> — {v.route_name || "No Route"}
-
-          <select
-            className="form-control"
-            defaultValue={v.route || ""}
-            onChange={async (e) => {
-  const newRouteId = Number(e.target.value);
-  try {
-    await api.patch(`/api/vehicle/${v.id}/`, { route: newRouteId });
-    showNotification(`Route for ${v.plate_number} updated.`);
-    // Optionally update local state if needed
-  } catch (err) {
-    console.error(err.response?.data || err);
-  }
-}}
-
-          >
-            <option value="">Change Route</option>
-            {routes.map(r => (
-              <option key={r.id} value={r.id}>
-                {r.name}
-              </option>
-            ))}
-          </select>
-
-          {v.in_queue && (
-            <input
-              type="time"
-              className="form-control"
-              defaultValue={v.takeoff_time || ""}
-              onBlur={async (e) => {
-  try {
-    await api.patch(`/api/queues/${v.queue_id}/time/`, {
-      takeoff_time: e.target.value
-    });
-    showNotification(`Takeoff time for ${v.plate_number} updated.`);
-  } catch (err) {
-    console.error(err.response?.data || err);
-  }
-}}
-
-            />
-          )}
-        </div>
-      ))}
-
-      {/* ================= ROUTE PRICES ================= */}
-
-
-<h3 style={{ marginTop: "20px" }}>Route Prices</h3>
-
-{busPrices.length > 0 ? (
-  busPrices.map((bp) => (
-    <div
-      key={bp.price_id} // make sure we use price_id from your API
-      style={{
-        padding: "10px",
-        marginBottom: "8px",
-        borderRadius: "6px",
-        background: "#f9f9f9",
-        display: "flex",
-        alignItems: "center",
-        gap: "10px"
-      }}
-    >
-      <strong style={{ flex: 1 }}>{bp.route_name || `Route ${bp.route_id}`}</strong>
-
-      <input
-        type="number"
-        value={bp.price}
-        onChange={(e) => {
-          const newPrice = e.target.value;
-          setBusPrices((prev) =>
-            prev.map((p) =>
-              p.price_id === bp.price_id ? { ...p, price: newPrice } : p
-            )
-          );
-        }}
-        onBlur={async (e) => {
-          try {
-            await api.patch(`/api/long-bus-priceschange/${bp.price_id}/`, 
-  { price: parseFloat(bp.price) }, 
-  { headers: { "Content-Type": "application/json" } }
-)
-.then(res => console.log("Updated:", res.data)).then(() => {
-              showNotification(`Price for ${bp.route_name} updated.`);
-            })
-.catch(err => console.error(err.response?.data || err))
-
-            // Optionally show a toast/snackbar here
-          } catch (err) {
-            console.error(err.response?.data || err);
-          }
-        }}
-        style={{ width: "100px", padding: "4px" }}
-      />
-    </div>
-  ))
-) : (
-  <div>No prices found for this bus</div>
-)}
-
-
-
-
-      <button
-        className="btn btn-outline"
-        onClick={() => setShowChangeModal(false)}
-      >
-        Close
-      </button>
-    </div>
-  </div>
-)}
 
 
 

@@ -5,9 +5,14 @@ export default function BusPriceModal({
   bus,
   prices,
   setPrices,
-  vehicles = [],
+  vehicles,
+  setVehicles,
+  routes,
+  longDistanceRoutes,
+  getRouteDistance,
   onClose
-}) {
+}) 
+ {
   const [loading, setLoading] = useState(false)
   const [newRouteId, setNewRouteId] = useState("")
   const [newPrice, setNewPrice] = useState("")
