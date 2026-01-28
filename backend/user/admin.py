@@ -30,28 +30,17 @@ class CustomUserChangeForm(UserChangeForm):
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
-    """Custom admin for User model using phone_number."""
     form = CustomUserChangeForm
     add_form = CustomUserCreationForm
-    
-    list_display = ('phone_number', 'user_type', 'is_staff', 'is_superuser', 'is_active')
-    list_filter = ('is_staff', 'is_superuser', 'is_active', 'user_type')
+
+    readonly_fields = ('date_joined',)  # 🔥 REQUIRED
+
     fieldsets = (
         (None, {'fields': ('phone_number', 'password')}),
         ('Permissions', {'fields': ('is_staff', 'is_superuser', 'is_active', 'user_type', 'is_admin')}),
         ('Relations', {'fields': ('employee', 'nid', 'branch', 'credentials')}),
         ('Important dates', {'fields': ('date_joined',)}),
     )
-    add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': ('phone_number', 'password1', 'password2', 'user_type'),
-        }),
-    )
-    search_fields = ('phone_number',)
-    ordering = ('phone_number',)
-    filter_horizontal = ()
-
 
 admin.site.register(Branch)
 admin.site.register(employeeDetail)
