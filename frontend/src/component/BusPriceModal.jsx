@@ -19,6 +19,8 @@ export default function BusPriceModal({
   const [routes, setRoutes] = useState([])
 const [editingQueue, setEditingQueue] = useState(null)
 const [takeoffTime, setTakeoffTime] = useState("")
+const [newRouteName, setNewRouteName] = useState("")
+const [addingRoute, setAddingRoute] = useState(false)
 
   const [editingVehicle, setEditingVehicle] = useState(null)
   const [vehicleRoute, setVehicleRoute] = useState("")
@@ -102,6 +104,23 @@ const [takeoffTime, setTakeoffTime] = useState("")
       setLoading(false)
     })
 }
+const addRoute = () => {
+  if (!newRouteName.trim()) return
+
+  setAddingRoute(true)
+  api.post("/api/route/", {
+    name: newRouteName
+  })
+    .then(res => {
+      setRoutes(prev => [...prev, res.data])   // update local routes
+      setNewRouteName("")
+      setAddingRoute(false)
+    })
+    .catch(err => {
+      console.error(err.response?.data || err)
+      setAddingRoute(false)
+    })
+}
 
 
   return (
@@ -129,6 +148,25 @@ const [takeoffTime, setTakeoffTime] = useState("")
             </button>
           </div>
         )) : <p>No routes assigned</p>}
+        {/* ADD ROUTE */}
+<div style={sectionStyle}>
+  <h4>Add New Route</h4>
+
+  <div style={{ display: "flex", gap: "10px" }}>
+    <input
+      type="text"
+      placeholder="Route name"
+      value={newRouteName}
+      onChange={e => setNewRouteName(e.target.value)}
+      style={{ ...inputStyle, width: "200px" }}
+    />
+
+    <button onClick={addRoute} disabled={addingRoute}>
+      {addingRoute ? "Adding..." : "Add Route"}
+    </button>
+  </div>
+</div>
+
 
         {/* ADD PRICE */}
         <div style={sectionStyle}>

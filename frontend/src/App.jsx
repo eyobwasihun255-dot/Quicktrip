@@ -18,6 +18,7 @@ import TicketPurchase from "./pages/ticket";
 import Authpro from "./pages/authpro";
 import Buses from "./pages/buses";
 import NotificationsPage from "./pages/notifications";
+import MessagesPage from "./pages/messages";
 function Logout() {
   localStorage.clear();
   return <Navigate to="/login" />;
@@ -38,6 +39,14 @@ function App() {
           element={
             <Protected allowedRoles={"a"}>
               <Home />
+            </Protected>
+          }
+        />
+        <Route
+          path="/messages"
+          element={
+            <Protected allowedRoles={"as"}>
+              <MessagesPage />
             </Protected>
           }
         />
